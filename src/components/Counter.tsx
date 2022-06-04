@@ -15,8 +15,8 @@ export const Counter = (p:CounterType) => {
     return (
         <div className='counter'>
             <div className='display'>
-                <div>Max value: <UniversalInput limit={p.max} callback={p.maxValue}/></div>
-                <div>Start value:<UniversalInput limit={p.start} callback={p.startValue}/></div>
+                <div>Max value: <UniversalInput errorValue={p.errorValue} limit={p.max} callback={p.maxValue}/></div>
+                <div>Start value:<UniversalInput errorValue={p.errorValue} limit={p.start} callback={p.startValue}/></div>
             </div>
             <div className="set">
                 <UniversalButton errorValue={p.errorValue} callback={p.setLimit} max={p.max} name="set"/>

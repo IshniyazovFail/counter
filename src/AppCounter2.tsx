@@ -1,17 +1,15 @@
 import React, {useEffect, useState} from 'react';
-import './App.css';
 import {Counter} from "./components/Counter";
 import {Limiter} from "./components/Limiter";
+import   "./App.css";
+import {LimiterCounter2} from "./components/LimiterCounter2";
 
-export type statusType = "active"|"expectation"
+export const AppCounter2 = () => {
 
-
-
-function App() {
     let [start, setStart] = useState<number>(0)
     let [max, setMax] = useState<number>(5)
     let [counter, setCounter] = useState<number>(start)
-    let[status,setStatus]=useState<statusType>("active")
+    let[status,setStatus]=useState<boolean>(false)
 
 
     useEffect(() => {
@@ -36,28 +34,29 @@ function App() {
     }
 
     const maxValue = (value: number) => {
-       setMax(value)
-        setStatus("expectation")
+        setMax(Math.round(value))
 
     }
     const startValue = (value: number) => {
-        setStart(value)
+        setStart(Math.round(value))
     }
 
     const setLimit = () => {
         localStorage.setItem("max value", JSON.stringify(max))
         localStorage.setItem("start value", JSON.stringify(start))
         setCounter(start)
-
+        setStatus(!status)
     }
 
     const errorValue= start<0||start===max||start>max;
     return (
         <div className='body'>
-            <Counter startValue={startValue} maxValue={maxValue} setLimit={setLimit} errorValue={errorValue} start={start} max={max}/>
-            <Limiter counter={counter} max={max} errorValue={errorValue} counterValue={counterValue} resetCounter={resetCounter}/>
+            {status? <Counter startValue={startValue} maxValue={maxValue} setLimit={setLimit} errorValue={errorValue} start={start} max={max}/>:
+                <LimiterCounter2 setLimit={setLimit} counter={counter} max={max} errorValue={errorValue} counterValue={counterValue} resetCounter={resetCounter}/>
+            }
         </div>
     )
-}
 
-export default App;
+
+};
+

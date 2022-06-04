@@ -3,6 +3,7 @@ import s from './UniversalInput.module.css'
 type UniversalInputType={
     callback:(value:number)=>void
     limit:number
+    errorValue:boolean
 }
 
 export const UniversalInput=(p:UniversalInputType)=>{
@@ -11,6 +12,6 @@ export const UniversalInput=(p:UniversalInputType)=>{
     }
 
     return(
-        <input className={s.input} value={p.limit} onChange={onChangeHandler} type={"number"}/>
+        <input className={p.errorValue?s.input_error:s.input} value={p.limit} onChange={onChangeHandler} type={"number"}/>
     )
 }
