@@ -5,8 +5,8 @@ type ButtonsType = {
 name:string
     callback:()=>void
     counter?:number
-    max?:number
-    errorValue?:boolean
+    max:number
+    errorValue:boolean
 }
 
 export const UniversalButton = (p: ButtonsType) => {

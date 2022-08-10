@@ -19,7 +19,7 @@ export const Counter = (p:CounterType) => {
                 <div>Start value:<UniversalInput errorValue={p.errorValue} limit={p.start} callback={p.startValue}/></div>
             </div>
             <div className="set">
-                <UniversalButton errorValue={p.errorValue} callback={p.setLimit} max={p.max} name="set"/>
+                <UniversalButton  errorValue={p.errorValue} callback={p.setLimit} max={p.max} name="set"/>
             </div>
         </div>
     );

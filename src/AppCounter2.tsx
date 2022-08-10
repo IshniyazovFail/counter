@@ -1,58 +1,44 @@
 import React, {useEffect, useState} from 'react';
 import {Counter} from "./components/Counter";
-import {Limiter} from "./components/Limiter";
-import   "./App.css";
+import "./App.css";
 import {LimiterCounter2} from "./components/LimiterCounter2";
+import {RootStateType} from "./state/store";
+import {useDispatch, useSelector} from "react-redux";
+import {setCounterAC, setMaxAC, setStartAC, setStatusAC} from "./redusers/CounterReduser";
+import {counterType} from "./App";
 
 export const AppCounter2 = () => {
 
-    let [start, setStart] = useState<number>(0)
-    let [max, setMax] = useState<number>(5)
-    let [counter, setCounter] = useState<number>(start)
-    let[status,setStatus]=useState<boolean>(false)
+    const state = useSelector<RootStateType, counterType>(state => state.counter)
+    const dispatch = useDispatch()
 
-
-    useEffect(() => {
-        let maxAsString = localStorage.getItem("max value")
-        if (maxAsString) {
-            setMax(JSON.parse(maxAsString))
-        }
-        let startAsString = localStorage.getItem("start value")
-        if (startAsString) {
-            setStart(JSON.parse(startAsString))
-            setCounter(JSON.parse(startAsString))
-        }
-    }, [])
 
 
     const counterValue = () => {
-        setCounter(counter + 1)
+        dispatch(setCounterAC(state.counter + 1))
     }
     const resetCounter = () => {
-        setCounter(start)
-
+        dispatch(setCounterAC(state.start ))
     }
 
     const maxValue = (value: number) => {
-        setMax(Math.round(value))
-
+        dispatch(setMaxAC(value))
     }
     const startValue = (value: number) => {
-        setStart(Math.round(value))
+        dispatch(setStartAC(value))
     }
 
     const setLimit = () => {
-        localStorage.setItem("max value", JSON.stringify(max))
-        localStorage.setItem("start value", JSON.stringify(start))
-        setCounter(start)
-        setStatus(!status)
+        dispatch(setCounterAC(state.start))
+        dispatch(setStatusAC(!state.status))
+
     }
 
-    const errorValue= start<0||start===max||start>max;
+    const errorValue= state.start<0||state.start===state.max||state.start>state.max||isNaN(state.max)||isNaN(state.start);
     return (
         <div className='body'>
-            {status? <Counter startValue={startValue} maxValue={maxValue} setLimit={setLimit} errorValue={errorValue} start={start} max={max}/>:
-                <LimiterCounter2 setLimit={setLimit} counter={counter} max={max} errorValue={errorValue} counterValue={counterValue} resetCounter={resetCounter}/>
+            {state.status? <Counter startValue={startValue} maxValue={maxValue} setLimit={setLimit} errorValue={errorValue} start={state.start} max={state.max}/>:
+                <LimiterCounter2 setLimit={setLimit} counter={state.counter} max={state.max} errorValue={errorValue} counterValue={counterValue} resetCounter={resetCounter}/>
             }
         </div>
     )
